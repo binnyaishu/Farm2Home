@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment & Checkout | Farm2Home</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 🌿 Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Arial, sans-serif;
+      }
+
+      :root {
+        --color-primary-green: #388e3c;
+        --color-secondary-gold: #ffc107;
+        --color-dark-text: #212121;
+        --color-light-bg: #f9f9f9;
+        --color-red: #f44336;
+        --color-white: #ffffff;
+
+        /* Scanner Colors */
+        --color-scanner-bg: #f0f0f0;
+        --color-scanner-border: #333333;
+        --color-scanner-line: #000000;
+        --color-qr-black: #000000;
+        --color-qr-white: #ffffff;
+
+        /* Form Colors */
+        --color-input-border: #cccccc;
+        --color-input-focus: #4caf50;
+      }
+
+      body {
+        background-color: var(--color-light-bg);
+        line-height: 1.6;
+        color: var(--color-dark-text);
+        padding-top: 80px;
+      }
+
+      /* --- NAVBAR & FOOTER STYLES (Retained) --- */
+      .main-header {
+        width: 100%;
+        background: linear-gradient(90deg, var(--color-primary-green), #4caf50);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .navbar h1 {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: var(--color-white);
+      }
+      /* ... other nav styles ... */
+
+      footer {
+        background: var(--color-dark-text);
+        color: var(--color-white);
+        text-align: center;
+        padding: 25px 0;
+        font-size: 0.95em;
+        font-weight: 300;
+        margin-top: 40px;
+      }
+
+      /* --- PAGE SPECIFIC STYLES: PAYMENT --- */
+      .payment-container {
+        width: 90%;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: var(--color-white);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .payment-header {
+        font-size: 2.2em;
+        color: var(--color-primary-green);
+        margin-bottom: 30px;
+        border-bottom: 3px solid var(--color-secondary-gold);
+        padding-bottom: 10px;
+        text-align: center;
+      }
+
+      .order-details {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 15px;
+        background-color: var(--color-light-bg);
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+
+      .total-amount {
+        font-size: 2em;
+        font-weight: 700;
+        color: var(--color-red);
+        margin-top: 10px;
+      }
+
+      .payment-methods {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .payment-card {
+        padding: 20px;
+        border: 2px solid #e0e0e0; /* Use a softer border for card sections */
+        border-radius: 10px;
+        transition: border-color 0.3s;
+      }
+      /* Highlight the active card section on hover */
+      .payment-card:hover {
+        border-color: var(--color-primary-green);
+      }
+
+      .payment-card h4 {
+        color: var(--color-primary-green);
+        margin-bottom: 15px;
+        font-size: 1.4em;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+      }
+
+      /* --- SCANNER STYLES (Retained Black and White) --- */
+      .scanner-box {
+        background-color: var(--color-scanner-bg);
+        width: 100%;
+        height: 300px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        border: 3px dashed var(--color-scanner-border);
+        padding: 10px;
+      }
+
+      .scanning-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--color-scanner-line);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        animation: scan 2s infinite alternate;
+      }
+
+      @keyframes scan {
+        from {
+          top: 0;
+        }
+        to {
+          top: 95%;
+        }
+      }
+
+      .scan-message {
+        margin-top: 15px;
+        text-align: center;
+        font-style: italic;
+        color: #666;
+      }
+
+      /* --- CARD/NET BANKING FORM STYLES (New/Refined) --- */
+
+      .card-form input {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 15px;
+        border: 1px solid var(--color-input-border);
+        border-radius: 8px;
+        font-size: 1em;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .card-form input:focus {
+        border-color: var(--color-input-focus);
+        box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+        outline: none;
+      }
+
+      .input-group {
+        display: flex;
+        gap: 15px;
+      }
+      .input-group input {
+        width: 50%;
+        flex-grow: 1;
+      }
+
+      /* Net Banking Select */
+      .net-banking-form label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .bank-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 10px;
+      }
+
+      .bank-item {
+        position: relative;
+      }
+
+      .bank-item input[type="radio"] {
+        /* Hide default radio button */
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .bank-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: border-color 0.2s, background-color 0.2s;
+        text-align: center;
+        font-size: 0.9em;
+        font-weight: 500;
+        height: 100%;
+      }
+
+      .bank-label i {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+        color: #666;
+      }
+
+      /* Highlight selected bank */
+      .bank-item input[type="radio"]:checked + .bank-label {
+        border-color: var(--color-primary-green);
+        background-color: #e8f5e9; /* Light green background */
+        color: var(--color-primary-green);
+      }
+      .bank-item input[type="radio"]:checked + .bank-label i {
+        color: var(--color-primary-green);
+      }
+
+      /* Pay Button Styling */
+      .pay-button {
+        width: 100%;
+        padding: 15px;
+        background-color: var(--color-primary-green);
+        color: var(--color-white);
+        border: none;
+        border-radius: 8px;
+        font-size: 1.2em;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .pay-button:hover {
+        background-color: #4caf50;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <nav class="navbar">
+        <h1>Farm2Home <i class="fas fa-seedling"></i></h1>
+        <ul id="mainNavList"></ul>
+      </nav>
+    </header>
+
+    <div class="payment-container">
+      <h2 class="payment-header">
+        <i class="fas fa-money-check-alt"></i> Secure Checkout
+      </h2>
+
+      <div class="order-details">
+        <p>You are paying for **items in your cart**.</p>
+        <p>Order ID: **#F2H-2024-00123**</p>
+        <div class="total-amount" id="paymentTotalDisplay">₹0.00</div>
+      </div>
+
+      <div class="payment-methods">
+        <div class="payment-card">
+          <h4><i class="fas fa-qrcode"></i> UPI Payment (Scan & Pay)</h4>
+          <div class="scanner-box">
+            <div class="scanning-line"></div>
+
+            <svg
+              id="fake-qr-code"
+              width="80%"
+              height="80%"
+              viewBox="0 0 100 100"
+              xmlns="http://www.w3.org/2000/svg"
+              style="
+                max-width: 250px;
+                background-color: var(--color-qr-white);
+                padding: 5px;
+                border: 3px solid var(--color-qr-black);
+                border-radius: 5px;
+              "
+            >
+              <rect x="5" y="5" width="90" height="90" fill="white" />
+              <rect x="10" y="10" width="25" height="25" fill="#000000" />
+              <rect x="12" y="12" width="21" height="21" fill="white" />
+              <rect x="15" y="15" width="15" height="15" fill="#000000" />
+              <rect x="65" y="10" width="25" height="25" fill="#000000" />
+              <rect x="67" y="12" width="21" height="21" fill="white" />
+              <rect x="70" y="15" width="15" height="15" fill="#000000" />
+              <rect x="10" y="65" width="25" height="25" fill="#000000" />
+              <rect x="12" y="67" width="21" height="21" fill="white" />
+              <rect x="15" y="70" width="15" height="15" fill="#000000" />
+              <rect x="45" y="45" width="10" height="10" fill="#000000" />
+              <rect x="35" y="50" width="5" height="5" fill="#000000" />
+              <rect x="50" y="30" width="5" height="5" fill="#000000" />
+              <rect x="60" y="55" width="10" height="5" fill="#000000" />
+              <rect x="55" y="75" width="5" height="10" fill="#000000" />
+            </svg>
+          </div>
+          <p class="scan-message">
+            Scan this code with your UPI app (e.g., Google Pay, PhonePe) to
+            complete your payment.
+          </p>
+          <button class="pay-button" onclick="handlePayment('upi')">
+            Authorize UPI Payment
+          </button>
+        </div>
+
+        <div class="payment-card">
+          <h4><i class="fas fa-credit-card"></i> Debit/Credit Card</h4>
+          <div class="card-form">
+            <input type="text" placeholder="Card Number" maxlength="19" />
+            <input type="text" placeholder="Card Holder Name" />
+            <div class="input-group">
+              <input type="text" placeholder="MM / YY (Expiry)" maxlength="5" />
+              <input type="text" placeholder="CVV" maxlength="4" />
+            </div>
+            <input type="email" placeholder="Email (for receipt)" />
+          </div>
+          <button class="pay-button" onclick="handlePayment('card')">
+            Pay ₹0.00 Now
+          </button>
+        </div>
+
+        <div class="payment-card">
+          <h4><i class="fas fa-university"></i> Net Banking</h4>
+          <div class="net-banking-form">
+            <label>Select your Bank:</label>
+            <div class="bank-list">
+              <div class="bank-item">
+                <input
+                  type="radio"
+                  id="bank1"
+                  name="netbank"
+                  value="sbi"
+                  checked
+                />
+                <label for="bank1" class="bank-label">
+                  <i class="fas fa-building"></i>
+                  SBI
+                </label>
+              </div>
+
+              <div class="bank-item">
+                <input type="radio" id="bank2" name="netbank" value="hdfc" />
+                <label for="bank2" class="bank-label">
+                  <i class="fas fa-piggy-bank"></i>
+                  HDFC
+                </label>
+              </div>
+
+              <div class="bank-item">
+                <input type="radio" id="bank3" name="netbank" value="icici" />
+                <label for="bank3" class="bank-label">
+                  <i class="fas fa-building"></i>
+                  ICICI
+                </label>
+              </div>
+
+              <div class="bank-item">
+                <input type="radio" id="bank4" name="netbank" value="axis" />
+                <label for="bank4" class="bank-label">
+                  <i class="fas fa-piggy-bank"></i>
+                  AXIS
+                </label>
+              </div>
+
+              <div class="bank-item">
+                <input type="radio" id="bank5" name="netbank" value="other" />
+                <label for="bank5" class="bank-label">
+                  <i class="fas fa-ellipsis-h"></i>
+                  Other Bank
+                </label>
+              </div>
+            </div>
+          </div>
+          <button
+            class="pay-button"
+            onclick="handlePayment('netbanking')"
+            style="margin-top: 20px"
+          >
+            Proceed to Bank Login
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer>&copy; 2024 Farm2Home. Fresh, Local, To you.</footer>
+
+    <script>
+      let loggedInUser = null;
+      let cart = [];
+      const TAX_RATE = 0.05;
+
+      // Utility: Custom Alert Function (Copied)
+      function customAlert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "custom-alert";
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
+        setTimeout(() => {
+          if (document.body.contains(alertBox)) {
+            document.body.removeChild(alertBox);
+          }
+        }, 2000);
+      }
+
+      function calculateGrandTotal() {
+        let subtotal = 0;
+        cart.forEach((item) => {
+          if (
+            typeof item.price === "number" &&
+            typeof item.quantity === "number"
+          ) {
+            subtotal += item.price * item.quantity;
+          }
+        });
+
+        const tax = subtotal * TAX_RATE;
+        const grandTotal = subtotal + tax;
+        return grandTotal;
+      }
+
+      // 3. Payment Handler (Updated to handle 'netbanking')
+      function handlePayment(method) {
+        if (cart.length === 0) {
+          customAlert("Cannot process payment. Cart is empty.");
+          setTimeout(() => (window.location.href = "products.html"), 1500);
+          return;
+        }
+
+        const grandTotal = calculateGrandTotal().toFixed(2);
+
+        let message;
+        if (method === "card") {
+          message = `Simulating redirection for Card Payment...`;
+        } else if (method === "netbanking") {
+          const selectedBank = document
+            .querySelector('input[name="netbank"]:checked')
+            .value.toUpperCase();
+          message = `Redirecting to ${selectedBank} login page...`;
+        } else {
+          message = `Processing ₹${grandTotal} payment via ${method.toUpperCase()}...`;
+        }
+
+        customAlert(message);
+
+        // Simulate a successful payment and clear the cart
+        setTimeout(() => {
+          customAlert(
+            `Payment of ₹${grandTotal} Successful! Thank you for shopping.`
+          );
+          localStorage.removeItem("customerCart");
+          cart = [];
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1500);
+        }, 3000); // Increased delay for more realistic simulation
+      }
+
+      // 4. Initialization
+      document.addEventListener("DOMContentLoaded", () => {
+        const storedCart = localStorage.getItem("customerCart");
+        if (storedCart) {
+          try {
+            cart = JSON.parse(storedCart);
+          } catch (e) {
+            cart = [];
+          }
+        }
+
+        // Display the total amount and update the button text
+        const grandTotal = calculateGrandTotal().toFixed(2);
+        document.getElementById(
+          "paymentTotalDisplay"
+        ).textContent = `₹${grandTotal}`;
+
+        // Update Card Pay Button text
+        const cardPayButton = document.querySelector(
+          ".payment-card:nth-child(2) .pay-button"
+        );
+        if (cardPayButton) {
+          cardPayButton.textContent = `Pay ₹${grandTotal} Now`;
+        }
+      });
+    </script>
+  </body>
+</html>

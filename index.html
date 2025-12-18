@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farm2Home | Fresh, Local, Delivered</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 🌿 General Reset & Typography */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Arial, sans-serif;
+      }
+
+      /* 🎨 GREEN & GOLD PALETTE */
+      :root {
+        --color-primary-green: #388e3c; /* Deep Green */
+        --color-secondary-gold: #ffc107; /* Amber Gold */
+        --color-dark-text: #212121;
+        --color-light-bg: #f9f9f9;
+        --color-red: #f44336;
+      }
+
+      body {
+        background-color: var(--color-light-bg);
+        line-height: 1.6;
+        color: var(--color-dark-text);
+        padding-top: 80px; /* Space for fixed navbar */
+      }
+
+      /* --- NAVBAR STYLES --- */
+      .main-header {
+        width: 100%;
+        background: linear-gradient(90deg, var(--color-primary-green), #4caf50);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .navbar h1 {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: #ffffff;
+      }
+
+      .navbar h1 .fa-seedling {
+        color: var(--color-secondary-gold);
+      }
+
+      .navbar ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .navbar li {
+        margin-left: 15px;
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+      }
+
+      .navbar a:hover,
+      .navbar .active-link {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* --- NAV BUTTON VARIANTS --- */
+      .nav-cart-btn {
+        background: var(--color-secondary-gold) !important;
+        color: var(--color-dark-text) !important;
+        font-weight: 700 !important;
+      }
+      .nav-cart-btn:hover {
+        background: #ffd740 !important;
+      }
+
+      .nav-farmer-btn,
+      .nav-admin-btn,
+      .nav-login-btn {
+        background: #ffffff !important;
+        color: var(--color-primary-green) !important;
+        font-weight: 700 !important;
+        border: 2px solid var(--color-primary-green);
+      }
+
+      .nav-farmer-btn:hover,
+      .nav-admin-btn:hover,
+      .nav-login-btn:hover {
+        background: var(--color-light-bg) !important;
+        color: var(--color-primary-green) !important;
+      }
+
+      .nav-logout-btn {
+        background: var(--color-red) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        border: none;
+      }
+
+      .nav-logout-btn:hover {
+        background: #e53935 !important;
+      }
+
+      /* --- HERO SECTION --- */
+      .hero-section {
+        background: url("https://placehold.co/1200x500/388e3c/ffffff?text=Fresh+Harvest+Field")
+          center/cover no-repeat;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        margin-bottom: 40px;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+      }
+
+      .hero-content {
+        z-index: 1;
+        color: white;
+        padding: 20px;
+        max-width: 800px;
+        border-radius: 10px;
+      }
+
+      .hero-title {
+        font-size: 3.5em;
+        font-weight: 800;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero-subtitle {
+        font-size: 1.2em;
+        font-weight: 400;
+        margin-bottom: 30px;
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: var(--color-secondary-gold);
+        color: var(--color-dark-text);
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 1.1em;
+        font-weight: 700;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .cta-button:hover {
+        background: #ffd740;
+        transform: translateY(-3px);
+      }
+
+      /* --- MISSION SECTION --- */
+      .mission-section {
+        width: 90%;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+
+      .mission-section h3 {
+        font-size: 2.5em;
+        color: var(--color-primary-green);
+        margin-bottom: 20px;
+        font-weight: 700;
+      }
+
+      .mission-section > p {
+        max-width: 800px;
+        margin: 0 auto 30px;
+        font-size: 1.1em;
+        color: #616161;
+      }
+
+      .mission-stats {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 30px;
+        gap: 20px;
+      }
+
+      .mission-stats > div {
+        flex: 1 1 200px;
+        padding: 20px;
+        border-radius: 10px;
+        background: var(--color-light-bg);
+        border: 1px solid #eee;
+      }
+
+      .stat-number {
+        font-size: 2.5em;
+        font-weight: 800;
+        color: var(--color-secondary-gold);
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .mission-stats p {
+        font-size: 1em;
+        color: var(--color-dark-text);
+        font-weight: 600;
+      }
+
+      /* --- PRODUCT SHOWCASE --- */
+      .products-section {
+        width: 90%;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px 0 40px;
+      }
+
+      .section-heading {
+        font-size: 2.5em;
+        color: var(--color-dark-text);
+        text-align: center;
+        margin-bottom: 40px;
+        font-weight: 800;
+        border-bottom: 4px solid var(--color-secondary-gold);
+        display: inline-block;
+        padding-bottom: 5px;
+        margin: 0 auto 40px;
+      }
+
+      .products-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        flex: 1 1 300px;
+        max-width: 350px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .product-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .card-content h3 {
+        font-size: 1.5em;
+        color: var(--color-primary-green);
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .card-content p {
+        color: #616161;
+        margin-bottom: 20px;
+      }
+
+      .card-link {
+        display: inline-block;
+        color: var(--color-secondary-gold);
+        text-decoration: none;
+        font-weight: 700;
+        border: 2px solid var(--color-secondary-gold);
+        padding: 8px 20px;
+        border-radius: 6px;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      .card-link:hover {
+        background: var(--color-secondary-gold);
+        color: var(--color-dark-text);
+      }
+
+      /* --- FOOTER --- */
+      footer {
+        background: var(--color-dark-text);
+        color: white;
+        text-align: center;
+        padding: 25px 0;
+        font-size: 0.95em;
+        font-weight: 300;
+        margin-top: 40px;
+      }
+
+      /* --- MODAL --- */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding-top: 60px;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 30px;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+      }
+
+      .modal-content h2 {
+        text-align: center;
+        color: var(--color-primary-green);
+        margin-bottom: 20px;
+        font-weight: 700;
+      }
+
+      .modal-content form input,
+      .modal-content form select,
+      .modal-content .cart-summary button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1em;
+      }
+
+      .modal-content .cart-summary button {
+        background-color: var(--color-primary-green);
+        color: white;
+        font-weight: 700;
+      }
+
+      .modal-content form button[type="submit"] {
+        background-color: var(--color-secondary-gold);
+        color: var(--color-dark-text);
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        transition: background 0.2s;
+      }
+
+      .modal-content form button[type="submit"]:hover {
+        background-color: #ffb300;
+      }
+
+      .close {
+        color: #aaa;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: var(--color-red);
+        text-decoration: none;
+      }
+
+      .cart-summary {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        text-align: right;
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+
+      .cart-summary p {
+        margin-bottom: 10px;
+      }
+
+      .empty-cart-message {
+        padding: 20px;
+        background: #fff3e0;
+        border: 1px solid #ffe0b2;
+        border-radius: 8px;
+        color: #e65100;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      /* --- ALERT --- */
+      .custom-alert {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        z-index: 9999;
+        text-align: center;
+        font-weight: 600;
+        border: 3px solid var(--color-primary-green);
+        max-width: 300px;
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 900px) {
+        .hero-title {
+          font-size: 2.5em;
+        }
+        .mission-stats {
+          flex-direction: column;
+        }
+        .products-grid {
+          flex-direction: column;
+          align-items: center;
+        }
+        .product-card {
+          max-width: 90%;
+        }
+        .navbar {
+          flex-direction: column;
+          padding: 10px 5px;
+        }
+        .navbar ul {
+          flex-wrap: wrap;
+          justify-content: center;
+          margin-top: 10px;
+        }
+        .navbar li {
+          margin: 5px 10px;
+        }
+        .navbar h1 {
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <nav class="navbar">
+        <h1>Farm2Home <i class="fas fa-seedling"></i></h1>
+        <ul id="mainNavList">
+          <li><a href="index.html" class="active-link">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="our_farmers.html">Our Farmers</a></li>
+          <li><a href="how_it_works.html">How It Works</a></li>
+          <li><a href="#" id="openRegisterModal">Register</a></li>
+
+          <li id="farmerNavLink" style="display: none">
+            <a
+              href="listProduce.html"
+              class="nav-farmer-btn"
+              onclick="handleNavigation('List Produce')"
+              ><i class="fas fa-box"></i> List Produce</a
+            >
+          </li>
+
+          <li id="adminNavLink" style="display: none">
+            <a
+              href="admin_dashboard.html"
+              class="nav-admin-btn"
+              onclick="handleNavigation('Admin Dashboard')"
+              ><i class="fas fa-user-shield"></i> Admin Dashboard</a
+            >
+          </li>
+
+          <li>
+            <a href="#" class="nav-cart-btn" id="openCart"
+              ><i class="fas fa-shopping-cart"></i> Cart</a
+            >
+          </li>
+
+          <li id="loginLogoutLi">
+            <a href="#" class="nav-login-btn" id="loginLogoutBtn"
+              ><i class="fas fa-user"></i> Login</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero-section">
+      <div class="hero-content">
+        <h2 class="hero-title">Connecting You to Farm-Fresh Goodness</h2>
+        <br /><br /><br />
+        <p class="hero-subtitle">
+          Sustainable, organic produce and dairy, harvested with care and
+          delivered right to your table. Taste the difference quality makes.
+        </p>
+        <a
+          href="products.html"
+          class="cta-button"
+          onclick="handleNavigation('products.html')"
+          >Explore Products</a
+        >
+      </div>
+    </section>
+
+    <section class="mission-section">
+      <h3>Our Mission: Freshness, Trust, and Sustainability</h3>
+      <p>
+        Farm2Home is more than just a delivery service; we're a partnership
+        between local farmers and your community. We eliminate the middlemen to
+        ensure you get the freshest food possible, reduce food miles, and
+        support local agriculture directly. Every purchase contributes to a
+        healthier planet and a stronger local economy.
+      </p>
+      <div class="mission-stats">
+        <div>
+          <span class="stat-number">100+</span>
+          <p>Partner Farms</p>
+        </div>
+        <div>
+          <span class="stat-number">99%</span>
+          <p>Organic Produce</p>
+        </div>
+        <div>
+          <span class="stat-number">24H</span>
+          <p>Harvest to You</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="products-showcase" class="products-section">
+      <h2 class="section-heading">Our Fresh Categories</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <img src="images/fresh vegetables.jpg" />
+          <div class="card-content">
+            <h3>Seasonal Vegetables</h3>
+            <p>From leafy greens to root crops, straight from the farm.</p>
+            <a href="products.html" class="card-link">Shop Now</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/organic dairy.jpg" alt="Organic Dairy" />
+          <div class="card-content">
+            <h3>Dairy & Eggs</h3>
+            <p>Fresh milk, artisanal cheese, and free-range eggs.</p>
+            <a href="products.html" class="card-link">Shop Now</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/artisanal meats.jpg" alt="Artisanal Meat" />
+          <div class="card-content">
+            <h3>Artisanal Meats</h3>
+            <p>Pasture-raised beef, chicken, and ethically sourced pork.</p>
+            <a href="products.html" class="card-link">Shop Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span
+          class="close"
+          onclick="document.getElementById('loginModal').style.display='none'"
+          >&times;</span
+        >
+        <h2>Farm2Home Login</h2>
+        <form id="loginForm">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            required
+          />
+
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+
+          <label for="role">Log in as:</label>
+          <select id="role" name="role" required>
+            <option value="" disabled selected>Select your role</option>
+            <option value="customer">Customer</option>
+            <option value="farmer">Farmer</option>
+            <option value="admin">Admin</option>
+          </select>
+
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <span
+          class="close"
+          onclick="document.getElementById('registerModal').style.display='none'"
+          >&times;</span
+        >
+        <h2>Farm2Home Register</h2>
+        <form id="registerForm">
+          <label for="regUsername">Username:</label>
+          <input
+            type="text"
+            id="regUsername"
+            name="regUsername"
+            placeholder="Create a username"
+            required
+          />
+
+          <label for="regEmail">Email:</label>
+          <input
+            type="email"
+            id="regEmail"
+            name="regEmail"
+            placeholder="Enter your email"
+            required
+          />
+
+          <label for="regPassword">Password:</label>
+          <input
+            type="password"
+            id="regPassword"
+            name="regPassword"
+            placeholder="Create a password"
+            required
+          />
+
+          <label for="regPassword">Mobile Number:</label>
+          <input
+            type="number"
+            id="regPassword"
+            name="regPassword"
+            placeholder="Enter Mobile Number"
+            required
+          />
+
+          <label for="regRole">Register as:</label>
+          <select id="regRole" name="regRole" required>
+            <option value="" disabled selected>Select your role</option>
+            <option value="customer">Customer</option>
+            <option value="farmer">Farmer</option>
+            <option value="admin">Admin</option>
+          </select>
+
+          <button type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="cartModal" class="modal">
+      <div class="modal-content">
+        <span
+          class="close"
+          onclick="document.getElementById('cartModal').style.display='none'"
+          >&times;</span
+        >
+        <h2>Your Cart</h2>
+        <div id="cartItems">
+          <p class="empty-cart-message">Your cart is empty.</p>
+        </div>
+        <div class="cart-summary">
+          <p>Total: $0.00</p>
+          <button onclick="customAlert('Checkout process simulated.')">
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Farm2Home. All rights reserved.</p>
+    </footer>
+
+    <script>
+      let loggedInUser = null;
+      const loginModal = document.getElementById("loginModal");
+      const registerModal = document.getElementById("registerModal");
+      const cartModal = document.getElementById("cartModal");
+      const loginLogoutBtn = document.getElementById("loginLogoutBtn");
+      const loginLogoutLi = document.getElementById("loginLogoutLi");
+      const openCartBtn = document.getElementById("openCart");
+      const farmerNavLink = document.getElementById("farmerNavLink");
+      const adminNavLink = document.getElementById("adminNavLink");
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+
+      // NEW: Register Modal elements
+      const openRegisterBtn = document.getElementById("openRegisterModal");
+
+      // 1. Custom Alert function
+      function customAlert(message) {
+        // Create alert box
+        const alertBox = document.createElement("div");
+        alertBox.className = "custom-alert";
+        alertBox.innerHTML = message;
+
+        // Append to body
+        document.body.appendChild(alertBox);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          alertBox.remove();
+        }, 3000);
+      }
+
+      // 2. Navigation & Persistence Handler
+      function updateNavForRole() {
+        // Check localStorage for persistent session
+        const storedUser = localStorage.getItem("loggedInUser");
+        if (storedUser) {
+          loggedInUser = JSON.parse(storedUser);
+        } else {
+          loggedInUser = null;
+        }
+
+        if (loggedInUser) {
+          // Logged In State
+          loginLogoutBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout `;
+          loginLogoutBtn.classList.remove("nav-login-btn");
+          loginLogoutBtn.classList.add("nav-logout-btn");
+          loginLogoutBtn.onclick = handleLogout;
+
+          // Show/Hide Role-Specific Links
+          farmerNavLink.style.display =
+            loggedInUser.role === "farmer" ? "block" : "none";
+          adminNavLink.style.display =
+            loggedInUser.role === "admin" ? "block" : "none";
+
+          // Hide Register link
+          openRegisterBtn.parentElement.style.display = "none";
+        } else {
+          // Logged Out State
+          loginLogoutBtn.innerHTML = `<i class="fas fa-user"></i> Login`;
+          loginLogoutBtn.classList.remove("nav-logout-btn");
+          loginLogoutBtn.classList.add("nav-login-btn");
+          loginLogoutBtn.onclick = () => (loginModal.style.display = "block");
+
+          // Hide Role-Specific Links
+          farmerNavLink.style.display = "none";
+          adminNavLink.style.display = "none";
+
+          // Show Register link
+          openRegisterBtn.parentElement.style.display = "block";
+        }
+      }
+
+      // 3. Logout Handler
+      function handleLogout() {
+        localStorage.removeItem("loggedInUser");
+        loggedInUser = null;
+        customAlert("You have been successfully logged out!");
+        updateNavForRole();
+        // Redirect to a neutral page after logout
+        if (
+          window.location.pathname.includes("listProduce.html") ||
+          window.location.pathname.includes("admin_dashboard.html")
+        ) {
+          window.location.href = "index.html";
+        }
+      }
+
+      // 4. Login Modal Handlers (Existing)
+      loginLogoutBtn.onclick = () => {
+        if (!loggedInUser) {
+          loginModal.style.display = "block";
+        }
+      };
+
+      // 5. Cart Modal Handler (Existing)
+      openCartBtn.onclick = () => (cartModal.style.display = "block");
+
+      // 6. Login Form Submission (Existing)
+      loginForm.onsubmit = (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const role = document.getElementById("role").value;
+
+        // Save session data to localStorage (This is what provides persistence)
+        loggedInUser = { username, role };
+        localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+        customAlert(`Welcome, ${username} (${role})!`);
+        loginModal.style.display = "none";
+        updateNavForRole(); // Update UI for the new role
+        loginForm.reset();
+
+        // Redirect logic based on role
+        if (role === "customer") {
+          window.location.href = "products.html";
+        } else if (role === "farmer") {
+          window.location.href = "listProduce.html";
+        } else if (role === "admin") {
+          window.location.href = "admin_dashboard.html";
+        }
+      };
+
+      // 7. NEW: Register Modal Open Handler
+      openRegisterBtn.onclick = () => {
+        registerModal.style.display = "block";
+      };
+
+      // 8. NEW: Register Form Submission (Works like Login)
+      registerForm.onsubmit = (e) => {
+        e.preventDefault();
+        const username = document.getElementById("regUsername").value;
+        const role = document.getElementById("regRole").value;
+
+        // --- SIMULATION OF SUCCESSFUL REGISTRATION ---
+        // Save session data to localStorage (This is what provides persistence)
+        loggedInUser = { username, role };
+        localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+        customAlert(`Registration successful! Welcome, ${username} (${role})!`);
+        registerModal.style.display = "none";
+        updateNavForRole(); // Update UI for the new role
+        registerForm.reset();
+
+        // Redirect logic based on role (Same as login)
+        if (role === "farmer") {
+          window.location.href = "listProduce.html";
+        } else if (role === "admin") {
+          // Redirects to your existing admin dashboard
+          window.location.href = "admin_dashboard.html";
+        } else {
+          // Default redirect for 'customer' or others
+          window.location.href = "products.html";
+        }
+      };
+
+      // 9. Initialize on page load (Check for persistent session)
+      document.addEventListener("DOMContentLoaded", updateNavForRole);
+
+      // Dummy function needed for existing HTML links (handleNavigation)
+      function handleNavigation(page) {
+        console.log(`Navigating to: ${page}`);
+      }
+    </script>
+  </body>
+</html>

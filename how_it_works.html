@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How It Works | Farm2Home</title>
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <!-- Google Font for Poppins -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 🌿 Global Styles (Consistent across files) */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Arial, sans-serif;
+      }
+
+      /* 🎨 GREEN & GOLD PALETTE */
+      :root {
+        --color-primary-green: #388e3c; /* Deep Green */
+        --color-secondary-gold: #ffc107; /* Amber Gold */
+        --color-dark-text: #212121;
+        --color-light-bg: #f5f5f5; /* Slightly lighter background for contrast */
+        --color-red: #f44336;
+        --color-white: #ffffff;
+        --color-shadow: rgba(0, 0, 0, 0.15);
+      }
+
+      body {
+        background-color: var(--color-light-bg);
+        line-height: 1.6;
+        color: var(--color-dark-text);
+        padding-top: 80px;
+      }
+
+      /* --- NAVBAR STYLES (Consistent across files) --- */
+      .main-header {
+        width: 100%;
+        background: linear-gradient(90deg, var(--color-primary-green), #4caf50);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px var(--color-shadow);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .navbar h1 {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: var(--color-white);
+      }
+
+      .navbar h1 .fa-seedling {
+        color: var(--color-secondary-gold);
+      }
+
+      .navbar ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .navbar li {
+        margin-left: 15px;
+        position: relative;
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: var(--color-white);
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+      }
+
+      .navbar a:hover,
+      .navbar .active-link {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* --- NAV BUTTON VARIANTS & BADGE --- */
+      .nav-cart-btn {
+        background: var(--color-secondary-gold) !important;
+        color: var(--color-dark-text) !important;
+        font-weight: 700 !important;
+      }
+      .nav-cart-btn:hover {
+        background: #ffd740 !important;
+      }
+
+      .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--color-red);
+        color: var(--color-white);
+        border-radius: 50%;
+        padding: 2px 7px;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .nav-farmer-btn,
+      .nav-admin-btn,
+      .nav-login-btn {
+        background: var(--color-white) !important;
+        color: var(--color-primary-green) !important;
+        font-weight: 700 !important;
+        border: 2px solid var(--color-primary-green);
+      }
+
+      .nav-logout-btn {
+        background: var(--color-red) !important;
+        color: var(--color-white) !important;
+        font-weight: 700 !important;
+        border: none;
+      }
+
+      /* --- ALERT --- */
+      .custom-alert {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background: var(--color-white);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        z-index: 9999;
+        text-align: center;
+        font-weight: 600;
+        border: 3px solid var(--color-primary-green);
+        max-width: 300px;
+      }
+
+      /* --- FOOTER --- */
+      footer {
+        background: var(--color-dark-text);
+        color: var(--color-white);
+        text-align: center;
+        padding: 25px 0;
+        font-size: 0.95em;
+        font-weight: 300;
+        margin-top: 40px;
+      }
+
+      /* --- PAGE SPECIFIC STYLES: HOW IT WORKS (Enhanced Aesthetics) --- */
+      .works-container {
+        width: 90%;
+        max-width: 1000px;
+        margin: 40px auto;
+        text-align: center;
+      }
+
+      .works-container h2 {
+        font-size: 3em;
+        font-weight: 800;
+        color: var(--color-primary-green);
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+      }
+
+      .works-container > p {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 50px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .step-list {
+        display: flex;
+        flex-direction: column;
+        gap: 50px; /* Increased gap for visual space */
+        position: relative;
+        text-align: left;
+      }
+
+      /* Timeline Connector Line - Enhanced with Gradient */
+      .step-list::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 49px;
+        width: 3px; /* Slightly thicker line */
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          var(--color-secondary-gold) 0%,
+          var(--color-primary-green) 50%,
+          var(--color-secondary-gold) 100%
+        );
+        opacity: 0.7;
+        z-index: 1;
+      }
+
+      .step {
+        display: flex;
+        align-items: center; /* Center content vertically */
+        gap: 20px;
+        background-color: var(--color-white);
+        padding: 30px; /* Increased padding */
+        border-radius: 12px;
+        border-left: 6px solid var(--color-primary-green); /* Green accent strip */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 5;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          box-shadow 0.3s ease;
+      }
+
+      .step:hover {
+        transform: translateY(-8px); /* More pronounced lift on hover */
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+      }
+
+      /* Step Number - Flipped colors for better visibility */
+      .step-number {
+        flex-shrink: 0;
+        width: 100px;
+        height: 100px;
+        background-color: var(--color-secondary-gold); /* Gold background */
+        color: var(--color-primary-green); /* Green text */
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.8em;
+        font-weight: 700;
+        border: 5px solid var(--color-white);
+        box-shadow: 0 0 0 4px rgba(56, 142, 60, 0.3); /* Subtle green glow */
+      }
+
+      .step-number i {
+        font-size: 2em;
+        color: var(--color-primary-green); /* Green icon color */
+      }
+
+      .step-content h3 {
+        font-size: 1.6em;
+        color: var(--color-dark-text);
+        margin-bottom: 5px;
+      }
+
+      .step-content p {
+        color: #444;
+        font-size: 1em;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        .step-list::before {
+          left: 30px;
+          width: 2px;
+        }
+        .step {
+          flex-direction: column;
+          text-align: center;
+          padding: 20px;
+          border-left: none; /* Remove side strip on mobile */
+          border-top: 6px solid var(--color-primary-green); /* Add top strip instead */
+        }
+        .step-number {
+          margin: 0 auto 15px;
+          width: 70px;
+          height: 70px;
+          font-size: 1.3em;
+        }
+        .step-number i {
+          font-size: 1.5em;
+        }
+        .step-content h3 {
+          font-size: 1.4em;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 🌿 NAVBAR -->
+    <header class="main-header">
+      <nav class="navbar">
+        <h1>Farm2Home <i class="fas fa-seedling"></i></h1>
+        <ul id="mainNavList">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="our_farmers.html">Our Farmers</a></li>
+          <li>
+            <a href="how_it_works.html" class="active-link">How It Works</a>
+          </li>
+          <!-- REGISTER LINK REMOVED FROM THIS PAGE -->
+
+          <!-- Farmer-only link -->
+          <li id="farmerNavLink" style="display: none">
+            <a href="listProduce.html" class="nav-farmer-btn"
+              ><i class="fas fa-box"></i> List Produce</a
+            >
+          </li>
+
+          <!-- Admin-only link -->
+          <li id="adminNavLink" style="display: none">
+            <a href="admin_dashboard.html" class="nav-admin-btn"
+              ><i class="fas fa-user-shield"></i> Admin Dashboard</a
+            >
+          </li>
+
+          <!-- Cart with Badge -->
+          <li>
+            <a href="cart.html" class="nav-cart-btn" id="openCart">
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span class="cart-badge" id="cartCountBadge" style="display: none"
+                >0</span
+              >
+            </a>
+          </li>
+
+          <!-- Login/Logout - Hidden when logged out on this page -->
+          <li id="loginLogoutLi">
+            <a href="#" class="nav-login-btn" id="loginLogoutBtn"
+              ><i class="fas fa-user"></i> Login</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- 🌿 MAIN CONTENT CONTAINER -->
+    <div class="works-container">
+      <h2>The Farm2Home Cycle: Connecting Growers to Consumers</h2>
+      <p>
+        Farm2Home acts as a digital marketplace, facilitating **direct
+        connections** between local farmers and customers. We don't handle
+        logistics or payments—that's arranged directly between you and the
+        grower.
+      </p>
+
+      <section class="step-list">
+        <div class="step">
+          <div class="step-number">1<i class="fas fa-search"></i></div>
+          <div class="step-content">
+            <h3>Browse & Reserve Produce</h3>
+            <p>
+              Explore our farmers' fresh listings and add items to your cart.
+              **Placing an order reserves your produce and shares your contact
+              details with the farmer**, initiating the connection process.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">
+            2<i class="fas fa-hand-holding-seedling"></i>
+          </div>
+          <div class="step-content">
+            <h3>Farmer Confirmation & Harvest</h3>
+            <p>
+              The farmer receives an immediate notification of your reservation.
+              They harvest your items on the scheduled day, ensuring maximum
+              freshness and guaranteeing the product quality for your meeting.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3<i class="fas fa-handshake"></i></div>
+          <div class="step-content">
+            <h3>Farmer Contact & Pickup</h3>
+            <p>
+              **The farmer will contact you directly to confirm the order,
+              arrange payment (cash/online transfer), and schedule a convenient
+              pickup time and location** (e.g., farm gate or local market).
+              Farm2Home is not involved in this transaction.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4<i class="fas fa-home"></i></div>
+          <div class="step-content">
+            <h3>Direct Transaction & Enjoyment</h3>
+            <p>
+              Meet the farmer, complete the transaction, and take home your
+              fresh produce. You can use our platform later to provide feedback,
+              strengthening the direct farmer-customer relationship and local
+              food chain.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 🌿 FOOTER -->
+    <footer>&copy; 2024 Farm2Home. Fresh, Local, To you.</footer>
+
+    <!-- 🌳 JAVASCRIPT FOR AUTH & UTILITIES -->
+    <script>
+      // 1. GLOBAL STATE & UTILITIES
+      let loggedInUser = null;
+      let cart = []; // Global cart array
+
+      // 2. Utility: Custom Alert Function
+      function customAlert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "custom-alert";
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
+        setTimeout(() => {
+          if (document.body.contains(alertBox)) {
+            document.body.removeChild(alertBox);
+          }
+        }, 2000);
+      }
+
+      // 3. Utility: Cart Count Display
+      function updateCartCountDisplay() {
+        const cartCountBadge = document.getElementById("cartCountBadge");
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountBadge.textContent = totalItems;
+        cartCountBadge.style.display = totalItems > 0 ? "inline-block" : "none";
+      }
+
+      // 4. Utility: Logout Function
+      function logout() {
+        localStorage.removeItem("loggedInUser");
+        loggedInUser = null;
+        customAlert("You have been logged out.");
+        // Re-run nav update to switch back to initial state (which hides the li on this page)
+        updateNavForRole();
+      }
+
+      // 5. Utility: Update Navbar based on stored role (Persistence Logic)
+      function updateNavForRole() {
+        const loginLogoutLi = document.getElementById("loginLogoutLi");
+        const loginLogoutBtn = document.getElementById("loginLogoutBtn");
+        const farmerNavLink = document.getElementById("farmerNavLink");
+        const adminNavLink = document.getElementById("adminNavLink");
+
+        const userData = localStorage.getItem("loggedInUser");
+
+        if (userData) {
+          // User is logged in (session is persistent)
+          loggedInUser = JSON.parse(userData);
+          const { username, role } = loggedInUser;
+
+          // Change Login button to Logout
+          loginLogoutBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout (${username})`;
+          loginLogoutBtn.className = "nav-logout-btn";
+          loginLogoutBtn.onclick = logout; // Set the button's action to logout
+          loginLogoutLi.style.display = "block"; // Ensure the li is visible when logged in
+
+          // Show/Hide Role-specific links
+          farmerNavLink.style.display = role === "farmer" ? "block" : "none";
+          adminNavLink.style.display = role === "admin" ? "block" : "none";
+        } else {
+          // User is logged out
+          loggedInUser = null;
+          // Since this is the 'how it works' page, we hide the entire <li> when logged out.
+          loginLogoutLi.style.display = "none";
+
+          // Hide role-specific links
+          farmerNavLink.style.display = "none";
+          adminNavLink.style.display = "none";
+        }
+      }
+
+      // 6. Initialization
+      document.addEventListener("DOMContentLoaded", () => {
+        // Load cart from localStorage for badge count
+        const storedCart = localStorage.getItem("customerCart");
+        if (storedCart) {
+          try {
+            cart = JSON.parse(storedCart);
+          } catch (e) {
+            console.error("Error parsing cart data from localStorage", e);
+            cart = [];
+          }
+        }
+
+        updateNavForRole(); // Set up login/logout persistence and UI
+        updateCartCountDisplay(); // Update the cart badge
+      });
+    </script>
+  </body>
+</html>

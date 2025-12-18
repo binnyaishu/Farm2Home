@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart | Farm2Home</title>
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <!-- Google Font for Poppins -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 🌿 Global Styles (Copied from products.html) */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Arial, sans-serif;
+      }
+
+      :root {
+        --color-primary-green: #388e3c;
+        --color-secondary-gold: #ffc107;
+        --color-dark-text: #212121;
+        --color-light-bg: #f9f9f9;
+        --color-red: #f44336;
+        --color-white: #ffffff;
+      }
+
+      body {
+        background-color: var(--color-light-bg);
+        line-height: 1.6;
+        color: var(--color-dark-text);
+        padding-top: 80px;
+      }
+
+      /* --- NAVBAR STYLES --- */
+      .main-header {
+        width: 100%;
+        background: linear-gradient(90deg, var(--color-primary-green), #4caf50);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .navbar h1 {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: var(--color-white);
+      }
+
+      .navbar h1 .fa-seedling {
+        color: var(--color-secondary-gold);
+      }
+
+      .navbar ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .navbar li {
+        margin-left: 15px;
+        position: relative;
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: var(--color-white);
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+      }
+
+      .navbar a:hover,
+      .navbar .active-link {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* --- NAV BUTTON VARIANTS & BADGE --- */
+      .nav-cart-btn {
+        background: var(--color-secondary-gold) !important;
+        color: var(--color-dark-text) !important;
+        font-weight: 700 !important;
+      }
+      .nav-cart-btn:hover {
+        background: #ffd740 !important;
+      }
+
+      .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--color-red);
+        color: var(--color-white);
+        border-radius: 50%;
+        padding: 2px 7px;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .nav-farmer-btn,
+      .nav-admin-btn,
+      .nav-login-btn {
+        background: var(--color-white) !important;
+        color: var(--color-primary-green) !important;
+        font-weight: 700 !important;
+        border: 2px solid var(--color-primary-green);
+      }
+
+      .nav-logout-btn {
+        background: var(--color-red) !important;
+        color: var(--color-white) !important;
+        font-weight: 700 !important;
+        border: none;
+      }
+
+      /* --- ALERT --- */
+      .custom-alert {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background: var(--color-white);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        z-index: 9999;
+        text-align: center;
+        font-weight: 600;
+        border: 3px solid var(--color-primary-green);
+        max-width: 300px;
+      }
+
+      /* --- FOOTER --- */
+      footer {
+        background: var(--color-dark-text);
+        color: var(--color-white);
+        text-align: center;
+        padding: 25px 0;
+        font-size: 0.95em;
+        font-weight: 300;
+        margin-top: 40px;
+      }
+
+      /* --- PAGE SPECIFIC STYLES: CART --- */
+      .cart-container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 40px auto;
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+      }
+
+      .cart-items-section {
+        flex: 3; /* Takes up 3/4 of space on desktop */
+        min-width: 300px;
+      }
+
+      .cart-summary-section {
+        flex: 1; /* Takes up 1/4 of space on desktop */
+        min-width: 280px;
+      }
+
+      .cart-header {
+        font-size: 2.5em;
+        color: var(--color-primary-green);
+        margin-bottom: 20px;
+        border-bottom: 3px solid var(--color-secondary-gold);
+        padding-bottom: 10px;
+      }
+
+      /* Cart Table Styling */
+      .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: var(--color-white);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .cart-table th,
+      .cart-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .cart-table th {
+        background-color: var(--color-primary-green);
+        color: var(--color-white);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9em;
+      }
+
+      .cart-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .item-name {
+        font-weight: 600;
+        color: var(--color-dark-text);
+      }
+
+      .item-price-unit {
+        font-size: 0.9em;
+        color: #666;
+        display: block;
+      }
+
+      /* Quantity Control */
+      .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .quantity-control button {
+        background: #eee;
+        border: 1px solid #ddd;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: background 0.2s;
+      }
+      .quantity-control button:hover {
+        background: #ccc;
+      }
+      .quantity-display {
+        width: 40px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        color: var(--color-red);
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: color 0.2s;
+      }
+      .remove-btn:hover {
+        color: #a00;
+      }
+
+      .item-subtotal {
+        font-weight: 700;
+        color: var(--color-red);
+      }
+
+      /* Summary Card */
+      .summary-card {
+        background-color: var(--color-white);
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--color-secondary-gold);
+      }
+      .summary-card h3 {
+        font-size: 1.6em;
+        color: var(--color-primary-green);
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+      .summary-line {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 1.05em;
+        border-bottom: 1px dashed #f0f0f0;
+      }
+      .summary-line:last-of-type {
+        border-bottom: none;
+        margin-top: 15px;
+        font-size: 1.4em;
+        font-weight: 700;
+        color: var(--color-primary-green);
+      }
+      .summary-line strong {
+        font-weight: 700;
+      }
+
+      .checkout-btn {
+        width: 100%;
+        padding: 15px;
+        margin-top: 25px;
+        background-color: var(--color-secondary-gold);
+        color: var(--color-dark-text);
+        border: none;
+        border-radius: 8px;
+        font-size: 1.2em;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .checkout-btn:hover {
+        background-color: #ffd740;
+        transform: translateY(-2px);
+      }
+
+      /* Empty Cart Message */
+      #emptyCartMessage {
+        text-align: center;
+        padding: 50px;
+        background-color: var(--color-white);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        color: #666;
+        font-size: 1.2em;
+        margin-top: 20px;
+      }
+
+      /* --- Responsive adjustments --- */
+      @media (max-width: 900px) {
+        .cart-container {
+          flex-direction: column;
+          align-items: center;
+        }
+        .cart-items-section {
+          width: 100%;
+        }
+        .cart-summary-section {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .cart-table thead {
+          display: none; /* Hide table headers on small screens */
+        }
+        .cart-table,
+        .cart-table tbody,
+        .cart-table tr,
+        .cart-table td {
+          display: block;
+          width: 100%;
+        }
+        .cart-table tr {
+          margin-bottom: 15px;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+        }
+        .cart-table td {
+          text-align: right;
+          padding-left: 50%;
+          position: relative;
+        }
+        .cart-table td::before {
+          content: attr(data-label);
+          position: absolute;
+          left: 15px;
+          width: 50%;
+          padding-right: 10px;
+          white-space: nowrap;
+          font-weight: 600;
+          text-align: left;
+          color: var(--color-primary-green);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 🌿 NAVBAR -->
+    <header class="main-header">
+      <nav class="navbar">
+        <h1>Farm2Home <i class="fas fa-seedling"></i></h1>
+        <ul id="mainNavList">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="our_farmers.html">Our Farmers</a></li>
+          <li><a href="how_it_works.html">How It Works</a></li>
+          <li><a href="register.html">Register</a></li>
+
+          <!-- Farmer-only link (Must be present for script to update) -->
+          <li id="farmerNavLink" style="display: none">
+            <a href="listProduce.html" class="nav-farmer-btn"
+              ><i class="fas fa-box"></i> List Produce</a
+            >
+          </li>
+
+          <!-- Admin-only link (Must be present for script to update) -->
+          <li id="adminNavLink" style="display: none">
+            <a href="admin_dashboard.html" class="nav-admin-btn"
+              ><i class="fas fa-user-shield"></i> Admin Dashboard</a
+            >
+          </li>
+
+          <!-- Cart with Badge -->
+          <li>
+            <a href="cart.html" class="nav-cart-btn active-link" id="openCart">
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span class="cart-badge" id="cartCountBadge" style="display: none"
+                >0</span
+              >
+            </a>
+          </li>
+
+          <!-- Login/Logout -->
+          <li id="loginLogoutLi">
+            <a href="#" class="nav-login-btn" id="loginLogoutBtn"
+              ><i class="fas fa-user"></i> Login</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- 🌿 MAIN CONTENT CONTAINER -->
+    <div class="cart-container">
+      <!-- Cart Items Section -->
+      <section class="cart-items-section">
+        <h2 class="cart-header">
+          <i class="fas fa-shopping-basket"></i> Your Basket
+        </h2>
+
+        <div id="emptyCartMessage" style="display: none">
+          <i
+            class="fas fa-box-open"
+            style="font-size: 3em; color: #a0a0a0; margin-bottom: 10px"
+          ></i>
+          <p>
+            Your cart is empty.
+            <a
+              href="products.html"
+              style="color: var(--color-primary-green); font-weight: 700"
+              >Start shopping now!</a
+            >
+          </p>
+        </div>
+
+        <table class="cart-table" id="cartTable" style="display: none">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price (per unit)</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="cartTableBody">
+            <!-- Cart items will be rendered here by JS -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Cart Summary Section -->
+      <aside class="cart-summary-section">
+        <div class="summary-card">
+          <h3>Order Summary</h3>
+          <div class="summary-details">
+            <div class="summary-line">
+              <span>Items Subtotal:</span>
+              <span id="subtotalValue">₹0.00</span>
+            </div>
+            <div class="summary-line">
+              <span>GST (5%):</span>
+              <span id="taxValue">₹0.00</span>
+            </div>
+            <div class="summary-line">
+              <strong>Grand Total:</strong>
+              <strong id="grandTotalValue">₹0.00</strong>
+            </div>
+          </div>
+
+          <button
+            class="checkout-btn"
+            id="checkoutBtn"
+            onclick="proceedToCheckout()"
+          >
+            Proceed to Checkout <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <button
+          class="checkout-btn"
+          style="
+            margin-top: 20px;
+            background-color: var(--color-red);
+            font-size: 1em;
+          "
+          onclick="clearCart()"
+        >
+          <i class="fas fa-trash"></i> Empty Cart
+        </button>
+      </aside>
+    </div>
+
+    <!-- 🌿 FOOTER -->
+    <footer>&copy; 2024 Farm2Home. Fresh, Local, To you.</footer>
+
+    <!-- 🌳 JAVASCRIPT FOR CART LOGIC -->
+    <script>
+      // 1. GLOBAL STATE & UTILITIES
+      let loggedInUser = null;
+      let cart = []; // Global cart array
+      const TAX_RATE = 0.05; // 5% GST
+
+      // The full product list is needed here for comprehensive details if we expand functionality,
+      // but for basic cart display, the cart array itself holds name, price, and unit.
+      // We will only define the utilities needed for the page to function.
+
+      // 2. Utility: Custom Alert Function (From products.html)
+      function customAlert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "custom-alert";
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
+        setTimeout(() => {
+          if (document.body.contains(alertBox)) {
+            document.body.removeChild(alertBox);
+          }
+        }, 2000);
+      }
+
+      // 3. Utility: Cart Count Display (From products.html)
+      function updateCartCountDisplay() {
+        const cartCountBadge = document.getElementById("cartCountBadge");
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountBadge.textContent = totalItems;
+        cartCountBadge.style.display = totalItems > 0 ? "inline-block" : "none";
+      }
+
+      // 4. Utility: Logout Function (From products.html)
+      function logout() {
+        localStorage.removeItem("loggedInUser");
+        loggedInUser = null;
+        customAlert("You have been logged out.");
+        // We do NOT clear the cart on logout, as it's common for customers to browse anonymously
+        window.location.href = "index.html";
+      }
+
+      // 5. Utility: Update Navbar based on stored role (From products.html)
+      function updateNavForRole() {
+        const openLoginBtn = document.getElementById("loginLogoutBtn");
+        const farmerNavLink = document.getElementById("farmerNavLink");
+        const adminNavLink = document.getElementById("adminNavLink");
+
+        const userData = localStorage.getItem("loggedInUser");
+
+        if (userData) {
+          loggedInUser = JSON.parse(userData);
+          const { role } = loggedInUser;
+
+          openLoginBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout`;
+          openLoginBtn.className = "nav-logout-btn";
+          openLoginBtn.onclick = logout;
+
+          farmerNavLink.style.display = role === "farmer" ? "block" : "none";
+          adminNavLink.style.display = role === "admin" ? "block" : "none";
+        } else {
+          openLoginBtn.innerHTML = `<i class="fas fa-user"></i> Login`;
+          openLoginBtn.className = "nav-login-btn";
+          // If the user clicks login, they should be redirected to index.html to show the modal
+          openLoginBtn.onclick = () => (window.location.href = "index.html");
+        }
+      }
+
+      // 6. Core: Calculate Totals
+      function calculateTotals() {
+        let subtotal = 0;
+        cart.forEach((item) => {
+          subtotal += item.price * item.quantity;
+        });
+
+        const tax = subtotal * TAX_RATE;
+        const grandTotal = subtotal + tax;
+
+        // Update DOM
+        document.getElementById(
+          "subtotalValue"
+        ).textContent = `₹${subtotal.toFixed(2)}`;
+        document.getElementById("taxValue").textContent = `₹${tax.toFixed(2)}`;
+        document.getElementById(
+          "grandTotalValue"
+        ).textContent = `₹${grandTotal.toFixed(2)}`;
+
+        // Enable/Disable checkout button
+        const checkoutBtn = document.getElementById("checkoutBtn");
+        checkoutBtn.disabled = subtotal === 0;
+        checkoutBtn.style.opacity = subtotal === 0 ? 0.6 : 1;
+      }
+
+      // 7. Core: Render Cart Items and Summary
+      function renderCart() {
+        const cartTableBody = document.getElementById("cartTableBody");
+        const cartTable = document.getElementById("cartTable");
+        const emptyMessage = document.getElementById("emptyCartMessage");
+
+        cartTableBody.innerHTML = "";
+
+        if (cart.length === 0) {
+          cartTable.style.display = "none";
+          emptyMessage.style.display = "block";
+          calculateTotals(); // Recalculate to show ₹0.00
+          return;
+        }
+
+        cartTable.style.display = "table";
+        emptyMessage.style.display = "none";
+
+        cart.forEach((item) => {
+          const itemSubtotal = item.price * item.quantity;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                  <td data-label="Item" class="item-name">${item.name}</td>
+                  <td data-label="Price" class="item-price">
+                      ₹${item.price.toFixed(2)}<span class="item-price-unit">${
+            item.unit
+          }</span>
+                  </td>
+                  <td data-label="Quantity">
+                      <div class="quantity-control">
+                          <button onclick="updateQuantity(${item.id}, -1)">
+                              <i class="fas fa-minus"></i>
+                          </button>
+                          <span class="quantity-display">${item.quantity}</span>
+                          <button onclick="updateQuantity(${item.id}, 1)">
+                              <i class="fas fa-plus"></i>
+                          </button>
+                      </div>
+                  </td>
+                  <td data-label="Subtotal" class="item-subtotal">₹${itemSubtotal.toFixed(
+                    2
+                  )}</td>
+                  <td data-label="Remove">
+                      <button class="remove-btn" onclick="removeItem(${
+                        item.id
+                      })">
+                          <i class="fas fa-times-circle"></i> Remove
+                      </button>
+                  </td>
+              `;
+          cartTableBody.appendChild(row);
+        });
+
+        calculateTotals();
+      }
+
+      // 8. Core: Save and Update (The main state updater)
+      function saveAndUpdateCart() {
+        localStorage.setItem("customerCart", JSON.stringify(cart));
+        updateCartCountDisplay();
+        renderCart();
+      }
+
+      // 9. Cart Actions
+      // function updateQuantity(id, change) {
+      //   const itemIndex = cart.findIndex((item) => item.id === id);
+      //   if (itemIndex > -1) {
+      //     const newQuantity = cart[itemIndex].quantity + change;
+      //     if (newQuantity <= 0) {
+      //       // If quantity drops to zero or below, remove the item
+      //       removeItem(id);
+      //     } else {
+      //       cart[itemIndex].quantity = newQuantity;
+      //       saveAndUpdateCart();
+      //     }
+      //   }
+      //   function proceedToCheckout() {
+      //     if (cart.length === 0) {
+      //       customAlert("Please add items to your cart before checking out.");
+      //       return;
+      //     }
+
+      //     // --- NEW REDIRECTION LOGIC ---
+      //     // Redirect to the new payment page
+      //     window.location.href = "payment.html";
+      //   }
+      // }
+
+      // 9. Cart Actions
+      function updateQuantity(id, change) {
+        const itemIndex = cart.findIndex((item) => item.id === id);
+        if (itemIndex > -1) {
+          const newQuantity = cart[itemIndex].quantity + change;
+          if (newQuantity <= 0) {
+            // If quantity drops to zero or below, remove the item
+            removeItem(id);
+          } else {
+            cart[itemIndex].quantity = newQuantity;
+            saveAndUpdateCart();
+          }
+        }
+      }
+      function removeItem(id) {
+        const initialLength = cart.length;
+        cart = cart.filter((item) => item.id !== id);
+        if (cart.length < initialLength) {
+          customAlert("Item removed from cart!");
+          saveAndUpdateCart();
+        }
+      }
+
+      function clearCart() {
+        if (cart.length === 0) {
+          customAlert("Your cart is already empty.");
+          return;
+        }
+        // Using a custom alert for confirmation as window.confirm is forbidden
+        // We will simulate the action directly since we cannot show a modal/confirm box right now.
+        cart = [];
+        customAlert("Your cart has been cleared!");
+        saveAndUpdateCart();
+      }
+
+      // function proceedToCheckout() {
+      //   if (cart.length === 0) {
+      //     customAlert("Please add items to your cart before checking out.");
+      //     return;
+      //   }
+
+      //   const grandTotal =
+      //     document.getElementById("grandTotalValue").textContent;
+      //   customAlert(`Preparing checkout for ${grandTotal}. Orders sent!`);
+
+      //   // In a real app, this would redirect to a checkout/payment page
+      // }
+
+      function proceedToCheckout() {
+        if (cart.length === 0) {
+          customAlert("Please add items to your cart before checking out.");
+          return;
+        }
+
+        // This line is now triggered directly by the button's 'onclick' attribute
+        window.location.href = "payment.html";
+      }
+
+      // 10. Initialization
+      document.addEventListener("DOMContentLoaded", () => {
+        // Load cart from localStorage
+        const storedCart = localStorage.getItem("customerCart");
+        if (storedCart) {
+          try {
+            cart = JSON.parse(storedCart);
+          } catch (e) {
+            console.error("Error parsing cart data from localStorage", e);
+            cart = [];
+          }
+        }
+
+        updateNavForRole(); // Set up login/logout persistence
+        renderCart(); // Initial rendering and calculation
+
+        // Attach checkout handler
+        //document.getElementById("checkoutBtn").onclick = proceedToCheckout;
+      });
+    </script>
+  </body>
+</html>

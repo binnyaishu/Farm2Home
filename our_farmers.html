@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Farmers | Farm2Home</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 🌿 Global Styles (Copied from products.html) */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Arial, sans-serif;
+      }
+
+      :root {
+        --color-primary-green: #388e3c;
+        --color-secondary-gold: #ffc107;
+        --color-dark-text: #212121;
+        --color-light-bg: #f9f9f9;
+        --color-red: #f44336;
+        --color-white: #ffffff;
+        --color-shadow: rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        background-color: var(--color-light-bg);
+        line-height: 1.6;
+        color: var(--color-dark-text);
+        padding-top: 80px;
+      }
+
+      /* --- NAVBAR STYLES (Copied from cart.html) --- */
+      .main-header {
+        width: 100%;
+        background: linear-gradient(90deg, var(--color-primary-green), #4caf50);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px var(--color-shadow);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .navbar h1 {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: var(--color-white);
+      }
+
+      .navbar h1 .fa-seedling {
+        color: var(--color-secondary-gold);
+      }
+
+      .navbar ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .navbar li {
+        margin-left: 15px;
+        position: relative;
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: var(--color-white);
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+      }
+
+      .navbar a:hover,
+      .navbar .active-link {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* --- NAV BUTTON VARIANTS & BADGE --- */
+      .nav-cart-btn {
+        background: var(--color-secondary-gold) !important;
+        color: var(--color-dark-text) !important;
+        font-weight: 700 !important;
+      }
+      .nav-cart-btn:hover {
+        background: #ffd740 !important;
+      }
+
+      .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--color-red);
+        color: var(--color-white);
+        border-radius: 50%;
+        padding: 2px 7px;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .nav-farmer-btn,
+      .nav-admin-btn,
+      .nav-login-btn {
+        background: var(--color-white) !important;
+        color: var(--color-primary-green) !important;
+        font-weight: 700 !important;
+        border: 2px solid var(--color-primary-green);
+      }
+
+      .nav-logout-btn {
+        background: var(--color-red) !important;
+        color: var(--color-white) !important;
+        font-weight: 700 !important;
+        border: none;
+      }
+
+      /* --- ALERT --- */
+      .custom-alert {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background: var(--color-white);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        z-index: 9999;
+        text-align: center;
+        font-weight: 600;
+        border: 3px solid var(--color-primary-green);
+        max-width: 300px;
+      }
+
+      /* --- FOOTER --- */
+      footer {
+        background: var(--color-dark-text);
+        color: var(--color-white);
+        text-align: center;
+        padding: 25px 0;
+        font-size: 0.95em;
+        font-weight: 300;
+        margin-top: 40px;
+      }
+
+      /* --- PAGE SPECIFIC STYLES: FARMERS --- */
+      .farmers-container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 40px auto;
+        text-align: center;
+      }
+
+      .hero-section {
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        padding: 50px 20px;
+        border-radius: 15px;
+        margin-bottom: 40px;
+        box-shadow: 0 8px 15px var(--color-shadow);
+      }
+
+      .hero-section h2 {
+        font-size: 3em;
+        font-weight: 800;
+        color: var(--color-primary-green);
+        margin-bottom: 10px;
+      }
+
+      .hero-section p {
+        font-size: 1.2em;
+        color: #4c4c4c;
+        max-width: 800px;
+        margin: 0 auto 20px;
+      }
+
+      .farmer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      /* Farmer Card Styles */
+      .farmer-card {
+        background-color: var(--color-white);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px var(--color-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-top: 5px solid var(--color-secondary-gold);
+        text-align: left;
+      }
+
+      .farmer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .farmer-icon {
+        font-size: 3em;
+        color: var(--color-primary-green);
+        margin-bottom: 15px;
+      }
+
+      .farmer-card h3 {
+        font-size: 1.8em;
+        font-weight: 700;
+        color: var(--color-dark-text);
+        margin-bottom: 5px;
+      }
+
+      .farmer-card .location {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      .farmer-card .specialty {
+        display: inline-block;
+        background-color: var(--color-primary-green);
+        color: var(--color-white);
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .farmer-card .quote {
+        font-style: italic;
+        color: #444;
+        border-left: 3px solid var(--color-secondary-gold);
+        padding-left: 15px;
+        margin-top: 15px;
+        font-size: 0.95em;
+      }
+
+      .support-cta {
+        margin-top: 50px;
+        padding: 30px;
+        background-color: var(--color-primary-green);
+        color: var(--color-white);
+        border-radius: 10px;
+      }
+
+      .support-cta h3 {
+        font-size: 2em;
+        margin-bottom: 15px;
+      }
+
+      .support-cta a {
+        display: inline-block;
+        background-color: var(--color-secondary-gold);
+        color: var(--color-dark-text);
+        text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.1em;
+        transition: background 0.3s, transform 0.2s;
+      }
+
+      .support-cta a:hover {
+        background-color: #ffd740;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <nav class="navbar">
+        <h1>Farm2Home <i class="fas fa-seedling"></i></h1>
+        <ul id="mainNavList">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li>
+            <a href="our_farmers.html" class="active-link">Our Farmers</a>
+          </li>
+          <li><a href="how_it_works.html">How It Works</a></li>
+          <li id="farmerNavLink" style="display: none">
+            <a href="listProduce.html" class="nav-farmer-btn"
+              ><i class="fas fa-box"></i> List Produce</a
+            >
+          </li>
+
+          <li id="adminNavLink" style="display: none">
+            <a href="admin_dashboard.html" class="nav-admin-btn"
+              ><i class="fas fa-user-shield"></i> Admin Dashboard</a
+            >
+          </li>
+
+          <li>
+            <a href="cart.html" class="nav-cart-btn" id="openCart">
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span class="cart-badge" id="cartCountBadge" style="display: none"
+                >0</span
+              >
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="farmers-container">
+      <section class="hero-section">
+        <h2>Meet the Hands that Feed Us</h2>
+        <p>
+          At Farm2Home, we don't just sell produce; we connect you directly to
+          the passionate farmers who cultivate it. Every purchase supports
+          sustainable farming practices and ensures a fairer price for their
+          hard work.
+        </p>
+        <p>
+          We believe in **transparency, community, and quality**, starting right
+          here with our dedicated farming partners across India.
+        </p>
+      </section>
+
+      <section class="farmer-profiles">
+        <div class="farmer-grid" id="farmerGrid"></div>
+      </section>
+
+      <section class="support-cta">
+        <h3>Ready to Taste the Difference?</h3>
+        <p>
+          Shop local and experience the freshness that comes from supporting
+          real, dedicated farmers.
+        </p>
+        <a href="products.html"
+          ><i class="fas fa-leaf"></i> Shop Our Produce Now</a
+        >
+      </section>
+    </div>
+
+    <footer>&copy; 2024 Farm2Home. Fresh, Local, To you.</footer>
+
+    <script>
+      // 1. GLOBAL STATE & UTILITIES (Copied from cart.html)
+      let loggedInUser = null;
+      let cart = []; // Global cart array
+
+      // 2. Mock Farmer Data (Crucial for the presentation!)
+      const farmerData = [
+        {
+          id: 1,
+          name: "Rajesh Kumar",
+          location: "Pune, Maharashtra",
+          specialty: "Organic Tomatoes",
+          icon: "fas fa-tractor",
+          quote:
+            "The soil is our greatest teacher. We grow with nature, not against it.",
+          image: "https://placehold.co/100x100/388e3c/ffffff?text=R",
+        },
+        {
+          id: 2,
+          name: "Priya Sharma",
+          location: "Mysuru, Karnataka",
+          specialty: "Heritage Rice Varieties",
+          icon: "fas fa-seedling",
+          quote:
+            "Bringing back the flavors of our ancestors—it's about preservation as much as production.",
+          image: "https://placehold.co/100x100/ffc107/388e3c?text=P",
+        },
+        {
+          id: 3,
+          name: "Ahmed Khan",
+          location: "Amritsar, Punjab",
+          specialty: "Whole Wheat Flours",
+          icon: "fas fa-wheat-awn",
+          quote:
+            "Quality starts from the seed. We mill our wheat fresh every week for maximum nutrition.",
+          image: "https://placehold.co/100x100/212121/ffffff?text=A",
+        },
+        {
+          id: 4,
+          name: "Meena Devi",
+          location: "Shimla, Himachal Pradesh",
+          specialty: "Mountain Apples",
+          icon: "fas fa-apple-alt",
+          quote:
+            "The clean mountain air gives our fruit its unique crispness and natural sweetness.",
+          image: "https://placehold.co/100x100/f44336/ffffff?text=M",
+        },
+      ];
+
+      // 3. Utility: Custom Alert Function (From previous files)
+      function customAlert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "custom-alert";
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
+        setTimeout(() => {
+          if (document.body.contains(alertBox)) {
+            document.body.removeChild(alertBox);
+          }
+        }, 2000);
+      }
+
+      // 4. Utility: Cart Count Display (From previous files)
+      function updateCartCountDisplay() {
+        const cartCountBadge = document.getElementById("cartCountBadge");
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountBadge.textContent = totalItems;
+        cartCountBadge.style.display = totalItems > 0 ? "inline-block" : "none";
+      }
+
+      // 5. Utility: Logout Function (From previous files)
+      function logout() {
+        localStorage.removeItem("loggedInUser");
+        loggedInUser = null;
+        customAlert("You have been logged out.");
+        window.location.href = "index.html";
+      }
+
+      // 6. Utility: Update Navbar based on stored role (Modified)
+      function updateNavForRole() {
+        // The Login/Logout link (openLoginBtn) is no longer in the DOM,
+        // but we still need to manage the Farmer/Admin visibility.
+        const farmerNavLink = document.getElementById("farmerNavLink");
+        const adminNavLink = document.getElementById("adminNavLink");
+
+        const userData = localStorage.getItem("loggedInUser");
+
+        if (userData) {
+          loggedInUser = JSON.parse(userData);
+          const { role } = loggedInUser;
+
+          // Hiding the Logout button isn't needed anymore as the element is gone.
+
+          farmerNavLink.style.display = role === "farmer" ? "block" : "none";
+          adminNavLink.style.display = role === "admin" ? "block" : "none";
+        } else {
+          // User is logged out. Role links are hidden by default in HTML.
+          farmerNavLink.style.display = "none";
+          adminNavLink.style.display = "none";
+        }
+      }
+
+      // 7. Core: Render Farmer Profiles
+      function renderFarmers() {
+        const grid = document.getElementById("farmerGrid");
+        grid.innerHTML = ""; // Clear existing content
+
+        farmerData.forEach((farmer) => {
+          const card = document.createElement("div");
+          card.className = "farmer-card";
+          card.innerHTML = `
+                    <div class="farmer-icon">
+                        <i class="${farmer.icon}"></i>
+                    </div>
+                    <h3>${farmer.name}</h3>
+                    <span class="location"><i class="fas fa-map-marker-alt"></i> ${farmer.location}</span>
+                    <span class="specialty">${farmer.specialty}</span>
+                    <p class="quote">“${farmer.quote}”</p>
+                `;
+          grid.appendChild(card);
+        });
+      }
+
+      // 8. Initialization
+      document.addEventListener("DOMContentLoaded", () => {
+        // Load cart from localStorage for badge count
+        const storedCart = localStorage.getItem("customerCart");
+        if (storedCart) {
+          try {
+            cart = JSON.parse(storedCart);
+          } catch (e) {
+            console.error("Error parsing cart data from localStorage", e);
+            cart = [];
+          }
+        }
+
+        updateNavForRole(); // Set up role-specific links (Admin/Farmer)
+        updateCartCountDisplay(); // Update the cart badge
+        renderFarmers(); // Load the farmer content
+      });
+    </script>
+  </body>
+</html>

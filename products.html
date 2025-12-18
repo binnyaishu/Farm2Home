@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products | Farm2Home</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 🌿 Global Styles (Copied from index.html) */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Arial, sans-serif;
+      }
+
+      :root {
+        --color-primary-green: #388e3c;
+        --color-secondary-gold: #ffc107;
+        --color-dark-text: #212121;
+        --color-light-bg: #f9f9f9;
+        --color-red: #f44336;
+        --color-white: #ffffff;
+      }
+
+      body {
+        background-color: var(--color-light-bg);
+        line-height: 1.6;
+        color: var(--color-dark-text);
+        padding-top: 80px;
+      }
+
+      /* --- NAVBAR STYLES --- */
+      .main-header {
+        width: 100%;
+        background: linear-gradient(90deg, var(--color-primary-green), #4caf50);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .navbar h1 {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: var(--color-white);
+      }
+
+      .navbar h1 .fa-seedling {
+        color: var(--color-secondary-gold);
+      }
+
+      .navbar ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .navbar li {
+        margin-left: 15px;
+        position: relative; /* Needed for cart badge positioning */
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: var(--color-white);
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+      }
+
+      .navbar a:hover,
+      .navbar .active-link {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* --- NAV BUTTON VARIANTS --- */
+      .nav-cart-btn {
+        background: var(--color-secondary-gold) !important;
+        color: var(--color-dark-text) !important;
+        font-weight: 700 !important;
+      }
+      .nav-cart-btn:hover {
+        background: #ffd740 !important;
+      }
+
+      /* Cart Badge */
+      .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--color-red);
+        color: var(--color-white);
+        border-radius: 50%;
+        padding: 2px 7px;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .nav-farmer-btn,
+      .nav-admin-btn,
+      .nav-login-btn {
+        background: var(--color-white) !important;
+        color: var(--color-primary-green) !important;
+        font-weight: 700 !important;
+        border: 2px solid var(--color-primary-green);
+      }
+
+      .nav-farmer-btn:hover,
+      .nav-admin-btn:hover,
+      .nav-login-btn:hover {
+        background: var(--color-light-bg) !important;
+        color: var(--color-primary-green) !important;
+      }
+
+      .nav-logout-btn {
+        background: var(--color-red) !important;
+        color: var(--color-white) !important;
+        font-weight: 700 !important;
+        border: none;
+      }
+
+      .nav-logout-btn:hover {
+        background: #e53935 !important;
+      }
+
+      /* --- FOOTER --- */
+      footer {
+        background: var(--color-dark-text);
+        color: var(--color-white);
+        text-align: center;
+        padding: 25px 0;
+        font-size: 0.95em;
+        font-weight: 300;
+        margin-top: 40px;
+      }
+
+      /* --- PAGE SPECIFIC STYLES --- */
+      .page-container {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        margin: 40px auto;
+        gap: 30px;
+      }
+
+      /* Filter Sidebar */
+      .filter-sidebar {
+        width: 250px;
+        padding: 20px;
+        background: var(--color-white);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        align-self: flex-start; /* Stick to the top */
+      }
+      .filter-sidebar h3 {
+        font-size: 1.4em;
+        color: var(--color-primary-green);
+        margin-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+      .filter-group {
+        margin-bottom: 20px;
+      }
+      .filter-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--color-dark-text);
+      }
+      .filter-group select,
+      .filter-group input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1em;
+        background-color: var(--color-light-bg);
+        appearance: none;
+      }
+
+      /* Product Main Area */
+      .product-main-area {
+        flex-grow: 1;
+        background: var(--color-white);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+      .product-main-area h2 {
+        font-size: 2.5em;
+        color: var(--color-primary-green);
+        margin-bottom: 20px;
+        border-bottom: 3px solid var(--color-secondary-gold);
+        padding-bottom: 10px;
+      }
+
+      .product-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+      }
+      .product-item {
+        background: var(--color-white);
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+      }
+      .product-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Product Image */
+      .product-item-image {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+      }
+      .product-item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures image covers the area */
+        transition: transform 0.3s ease;
+      }
+      .product-item:hover .product-item-image img {
+        transform: scale(1.05);
+      }
+
+      .product-info {
+        padding: 15px;
+      }
+      .product-item h3 {
+        color: var(--color-dark-text);
+        font-size: 1.3em;
+        margin-bottom: 5px;
+      }
+      .product-item p {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+      }
+      .product-price {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: var(--color-red);
+        margin-top: 10px;
+        display: block;
+      }
+      .product-farmer {
+        font-size: 0.8em;
+        color: var(--color-primary-green);
+        font-weight: 600;
+        background-color: #e8f5e9;
+        padding: 2px 6px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-top: 5px;
+      }
+      .add-to-cart {
+        background-color: var(--color-secondary-gold);
+        color: var(--color-dark-text);
+        border: none;
+        width: 100%;
+        padding: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border-radius: 0 0 12px 12px;
+      }
+      .add-to-cart:hover {
+        background-color: #ffd740;
+      }
+
+      /* --- Responsive adjustments --- */
+      @media (max-width: 768px) {
+        .page-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+        .filter-sidebar {
+          width: 100%;
+        }
+      }
+
+      /* --- ALERT --- */
+      .custom-alert {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background: var(--color-white);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        z-index: 9999;
+        text-align: center;
+        font-weight: 600;
+        border: 3px solid var(--color-primary-green);
+        max-width: 300px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <nav class="navbar">
+        <h1>Farm2Home <i class="fas fa-seedling"></i></h1>
+        <ul id="mainNavList">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html" class="active-link">Products</a></li>
+          <li><a href="our_farmers.html">Our Farmers</a></li>
+          <li><a href="how_it_works.html">How It Works</a></li>
+          <li id="farmerNavLink" style="display: none">
+            <a href="listProduce.html" class="nav-farmer-btn"
+              ><i class="fas fa-box"></i> List Produce</a
+            >
+          </li>
+
+          <li id="adminNavLink" style="display: none">
+            <a href="admin_dashboard.html" class="nav-admin-btn"
+              ><i class="fas fa-user-shield"></i> Admin Dashboard</a
+            >
+          </li>
+
+          <li>
+            <a href="cart.html" class="nav-cart-btn" id="openCart">
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span class="cart-badge" id="cartCountBadge" style="display: none"
+                >0</span
+              >
+            </a>
+          </li>
+
+          <li id="loginLogoutLi" style="display: none">
+            <a href="login.html" class="nav-login-btn" id="loginLogoutBtn"
+              ><i class="fas fa-user"></i> Login</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page-container">
+      <aside class="filter-sidebar">
+        <h3><i class="fas fa-filter"></i> Filter Products</h3>
+
+        <div class="filter-group">
+          <label for="categoryFilter">Category</label>
+          <select id="categoryFilter" onchange="filterProducts()">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="farmerSearch">Search by Farmer</label>
+          <input
+            type="text"
+            id="farmerSearch"
+            placeholder="e.g. Green Valley Farms"
+            oninput="filterProducts()"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label for="priceSort">Sort By Price</label>
+          <select id="priceSort" onchange="filterProducts()">
+            <option value="none">Default</option>
+            <option value="asc">Price: Low to High</option>
+            <option value="desc">Price: High to Low</option>
+          </select>
+        </div>
+      </aside>
+
+      <main class="product-main-area">
+        <h2>Fresh Products for You</h2>
+        <p>
+          Browse our selection of the freshest, locally sourced produce and
+          dairy.
+        </p>
+
+        <div class="product-list" id="productList">
+          <p
+            id="noResults"
+            style="
+              display: none;
+              text-align: center;
+              color: #757575;
+              padding: 50px;
+            "
+          >
+            <i
+              class="fas fa-search"
+              style="font-size: 2em; margin-bottom: 10px"
+            ></i
+            ><br />
+            No products found matching your filter criteria.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <footer>&copy; 2024 Farm2Home. Fresh, Local, To you.</footer>
+
+    <script>
+      // 1. MOCK PRODUCT DATA (from data.js)
+      // *** MODIFICATION: Changed imageUrls to local paths (e.g., 'images/carrots.jpg') ***
+      const MOCK_PRODUCTS = [
+        {
+          id: 1,
+          name: "Organic Carrots",
+          category: "Vegetables",
+          price: 55.0,
+          farmer: "Green Valley Farms",
+          farmerId: "farmer1",
+          stock: 150,
+          unit: "/kg",
+          imageUrl: "images/organic carrots.jpg",
+        },
+        {
+          id: 2,
+          name: "Brown Eggs",
+          category: "Dairy & Eggs",
+          price: 120.0,
+          farmer: "Sunny Side Poultry",
+          farmerId: "farmer2",
+          stock: 80,
+          unit: "/doz",
+          imageUrl: "images/brown eggs.jpg",
+        },
+        {
+          id: 3,
+          name: "Whole Wheat Bread",
+          category: "Bakery",
+          price: 180.0,
+          farmer: "Rustic Oven",
+          farmerId: "farmer3",
+          stock: 45,
+          unit: "/loaf",
+          imageUrl: "images/whole wheat bread.jpg",
+        },
+        {
+          id: 4,
+          name: "Heirloom Tomatoes",
+          category: "Vegetables",
+          price: 75.0,
+          farmer: "Green Valley Farms",
+          farmerId: "farmer1",
+          stock: 90,
+          unit: "/kg",
+          imageUrl: "images/heirloom tomatoes.jpg",
+        },
+        {
+          id: 5,
+          name: "Fresh Paneer",
+          category: "Dairy & Eggs",
+          price: 350.0,
+          farmer: "Hilltop Dairy",
+          farmerId: "farmer4",
+          stock: 55,
+          unit: "/kg",
+          imageUrl: "images/fresh paneer.jpg",
+        },
+        {
+          id: 6,
+          name: "Wildflower Honey",
+          category: "Pantry",
+          price: 499.0,
+          farmer: "Bee Bliss Apiary",
+          farmerId: "farmer5",
+          stock: 120,
+          unit: "/jar",
+          imageUrl: "images/wildflower honey.jpg",
+        },
+        {
+          id: 7,
+          name: "Country Chicken",
+          category: "Meat & Poultry",
+          price: 290.0,
+          farmer: "Sunny Side Poultry",
+          farmerId: "farmer2",
+          stock: 60,
+          unit: "/kg",
+          imageUrl: "images/country chicken.jpeg",
+        },
+        {
+          id: 8,
+          name: "Coriander Chutney Base",
+          category: "Pantry",
+          price: 150.0,
+          farmer: "Green Valley Farms",
+          farmerId: "farmer1",
+          stock: 30,
+          unit: "/jar",
+          imageUrl: "images/coriander chutney.jpg",
+        },
+        {
+          id: 9,
+          name: "Blueberries",
+          category: "Fruits",
+          price: 220.0,
+          farmer: "Berry Patch Orchards",
+          farmerId: "farmer6",
+          stock: 200,
+          unit: "/box",
+          imageUrl: "images/blueberries.jpg",
+        },
+        {
+          id: 10,
+          name: "A2 Cow Milk",
+          category: "Dairy & Eggs",
+          price: 65.0,
+          farmer: "Hilltop Dairy",
+          farmerId: "farmer4",
+          stock: 110,
+          unit: "/liter",
+          imageUrl: "images/a2 cow milk.jpg",
+        },
+        {
+          id: 11,
+          name: "Organic Spinach",
+          category: "Vegetables",
+          price: 60.0,
+          farmer: "Green Valley Farms",
+          farmerId: "farmer1",
+          stock: 100,
+          unit: "/kg",
+          imageUrl: "images/organic spinach.jpg",
+        },
+        {
+          id: 12,
+          name: "Multigrain Bread",
+          category: "Bakery",
+          price: 190.0,
+          farmer: "Rustic Oven",
+          farmerId: "farmer3",
+          stock: 40,
+          unit: "/loaf",
+          imageUrl: "images/multigrain bread.jpg",
+        },
+        {
+          id: 13,
+          name: "Raw Forest Honey",
+          category: "Pantry",
+          price: 520.0,
+          farmer: "Bee Bliss Apiary",
+          farmerId: "farmer5",
+          stock: 100,
+          unit: "/jar",
+          imageUrl: "images/raw forest honey.jpg",
+        },
+        {
+          id: 14,
+          name: "Mint Chutney Base",
+          category: "Pantry",
+          price: 140.0,
+          farmer: "Green Valley Farms",
+          farmerId: "farmer1",
+          stock: 40,
+          unit: "/jar",
+          imageUrl: "images/mint chutney.jpg",
+        },
+        {
+          id: 15,
+          name: "Strawberries",
+          category: "Fruits",
+          price: 200.0,
+          farmer: "Berry Patch Orchards",
+          farmerId: "farmer6",
+          stock: 180,
+          unit: "/box",
+          imageUrl: "images/strawberries.jpg",
+        },
+        {
+          id: 16,
+          name: "Basmati Rice",
+          category: "Grains",
+          price: 120.0,
+          farmer: "Golden Grain Farms",
+          farmerId: "farmer7",
+          stock: 200,
+          unit: "/kg",
+          imageUrl: "images/basmati rice.jpg",
+        },
+        {
+          id: 17,
+          name: "Almond Butter",
+          category: "Pantry",
+          price: 450.0,
+          farmer: "Nut Grove",
+          farmerId: "farmer8",
+          stock: 80,
+          unit: "/jar",
+          imageUrl: "images/almond butter.jpg",
+        },
+        {
+          id: 18,
+          name: "Fresh Basil",
+          category: "Herbs",
+          price: 90.0,
+          farmer: "Herbal Haven",
+          farmerId: "farmer9",
+          stock: 60,
+          unit: "/bunch",
+          imageUrl: "images/fresh basil.jpg",
+        },
+        {
+          id: 19,
+          name: "Sweet Corn",
+          category: "Vegetables",
+          price: 65.0,
+          farmer: "Golden Grain Farms",
+          farmerId: "farmer7",
+          stock: 120,
+          unit: "/kg",
+          imageUrl: "images/sweet corn.jpg",
+        },
+        {
+          id: 20,
+          name: "Mustard Oil",
+          category: "Pantry",
+          price: 250.0,
+          farmer: "Oil Grove",
+          farmerId: "farmer10",
+          stock: 90,
+          unit: "/liter",
+          imageUrl: "images/mustard oil.jpg",
+        },
+        {
+          id: 21,
+          name: "Farm Apples",
+          category: "Fruits",
+          price: 180.0,
+          farmer: "Orchard Hill",
+          farmerId: "farmer11",
+          stock: 150,
+          unit: "/kg",
+          imageUrl: "images/farm apples.jpg",
+        },
+        {
+          id: 22,
+          name: "Multigrain Cookies",
+          category: "Bakery",
+          price: 220.0,
+          farmer: "Rustic Oven",
+          farmerId: "farmer3",
+          stock: 70,
+          unit: "/box",
+          imageUrl: "images/multigrain cookies.jpeg",
+        },
+        {
+          id: 23,
+          name: "Orange Juice",
+          category: "Beverages",
+          price: 90.0,
+          farmer: "Citrus Grove",
+          farmerId: "farmer12",
+          stock: 100,
+          unit: "/liter",
+          imageUrl: "images/orange juice.jpg",
+        },
+        {
+          id: 24,
+          name: "Sun-Dried Tomatoes",
+          category: "Pantry",
+          price: 180.0,
+          farmer: "Herbal Haven",
+          farmerId: "farmer9",
+          stock: 50,
+          unit: "/pack",
+          imageUrl: "images/sun dried tomatoes.jpg",
+        },
+        {
+          id: 25,
+          name: "Roasted Cashews",
+          category: "Snacks",
+          price: 320.0,
+          farmer: "Nut Grove",
+          farmerId: "farmer8",
+          stock: 100,
+          unit: "/pack",
+          imageUrl: "images/roasted cashews.jpg",
+        },
+        {
+          id: 26,
+          name: "Fresh Lemongrass",
+          category: "Herbs",
+          price: 70.0,
+          farmer: "Herbal Haven",
+          farmerId: "farmer9",
+          stock: 40,
+          unit: "/bunch",
+          imageUrl: "images/fresh lemongrass.jpg",
+        },
+        {
+          id: 27,
+          name: "Cold Brew Coffee",
+          category: "Beverages",
+          price: 150.0,
+          farmer: "Brew Barn",
+          farmerId: "farmer13",
+          stock: 60,
+          unit: "/bottle",
+          imageUrl: "images/cold brew coffee.jpeg",
+        },
+        {
+          id: 28,
+          name: "Sweet Potato",
+          category: "Vegetables",
+          price: 50.0,
+          farmer: "Green Valley Farms",
+          farmerId: "farmer1",
+          stock: 130,
+          unit: "/kg",
+          imageUrl: "images/sweet potato.jpg",
+        },
+        {
+          id: 29,
+          name: "Cucumber Pickles",
+          category: "Pantry",
+          price: 160.0,
+          farmer: "Pickle Patch",
+          farmerId: "farmer14",
+          stock: 70,
+          unit: "/jar",
+          imageUrl: "images/cucumber pickles.jpg",
+        },
+        {
+          id: 30,
+          name: "Farmhouse Cheese",
+          category: "Dairy & Eggs",
+          price: 400.0,
+          farmer: "Hilltop Dairy",
+          farmerId: "farmer4",
+          stock: 50,
+          unit: "/kg",
+          imageUrl: "images/farmhouse cheese.jpg",
+        },
+      ];
+
+      // 2. DOM elements and State Variables
+      const farmerNavLink = document.getElementById("farmerNavLink");
+      const adminNavLink = document.getElementById("adminNavLink");
+      const productList = document.getElementById("productList");
+      const noResults = document.getElementById("noResults");
+      const categoryFilter = document.getElementById("categoryFilter");
+      const farmerSearch = document.getElementById("farmerSearch");
+      const priceSort = document.getElementById("priceSort");
+      const loginLogoutLink = document.getElementById("loginLogoutBtn"); // Used to hook logout function
+
+      let loggedInUser = null;
+      let cart = []; // Global cart array
+
+      // 3. Utility: Custom Alert Function
+      function customAlert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "custom-alert";
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
+        setTimeout(() => {
+          if (document.body.contains(alertBox)) {
+            document.body.removeChild(alertBox);
+          }
+        }, 2000);
+      }
+
+      // 4. Utility: Cart Count Display
+      function updateCartCountDisplay() {
+        const cartCountBadge = document.getElementById("cartCountBadge");
+        // Calculate total quantity of items in the cart
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountBadge.textContent = totalItems;
+        // Only show the badge if there are items
+        cartCountBadge.style.display = totalItems > 0 ? "inline-block" : "none";
+      }
+
+      // 5. Core: Add to Cart Functionality (Updated to save unit)
+      function addToCart(productId) {
+        const product = MOCK_PRODUCTS.find((p) => p.id === productId);
+        if (!product) return; // Should not happen with mock data
+
+        // Check if item already exists in cart
+        let cartItem = cart.find((item) => item.id === productId);
+
+        if (cartItem) {
+          // Check stock before adding
+          if (cartItem.quantity < product.stock) {
+            cartItem.quantity += 1;
+            customAlert(`Added 1 x ${product.name} to cart!`);
+          } else {
+            customAlert(`Out of stock for ${product.name}!`);
+            return;
+          }
+        } else {
+          // Add new item to cart (assuming 1st item is available)
+          if (product.stock > 0) {
+            cart.push({
+              id: productId,
+              name: product.name,
+              price: product.price,
+              farmerId: product.farmerId, // Important for future fulfillment logic
+              unit: product.unit, // Now saving the unit for cart display
+              quantity: 1,
+            });
+            customAlert(`Added 1 x ${product.name} to cart!`);
+          } else {
+            customAlert(`Out of stock for ${product.name}!`);
+            return;
+          }
+        }
+
+        // Save cart state to localStorage
+        localStorage.setItem("customerCart", JSON.stringify(cart));
+        updateCartCountDisplay();
+
+        // Log cart contents to console for debugging
+        console.log("Current Cart:", cart);
+      }
+
+      // 6. Core: Logout Function
+      function logout() {
+        localStorage.removeItem("loggedInUser");
+        loggedInUser = null;
+        customAlert("You have been logged out.");
+        // We do NOT clear the cart on logout, as it's common for customers to browse anonymously
+        window.location.href = "index.html"; // Redirect to home on logout
+      }
+
+      // 7. Core: Update Navbar based on stored role (Persistence Logic)
+      function updateNavForRole() {
+        const userData = localStorage.getItem("loggedInUser");
+
+        if (userData) {
+          loggedInUser = JSON.parse(userData);
+          const { username, role } = loggedInUser;
+
+          // Set the hidden login link to act as a logout button
+          loginLogoutLink.href = "#"; // Make the hidden link non-navigable
+          loginLogoutLink.onclick = logout; // Set the action to logout
+
+          // Hide/Show Role-specific links (Farmer/Admin)
+          farmerNavLink.style.display = role === "farmer" ? "block" : "none";
+          adminNavLink.style.display = role === "admin" ? "block" : "none";
+        } else {
+          // User is logged out. Role links are hidden by default in HTML.
+          farmerNavLink.style.display = "none";
+          adminNavLink.style.display = "none";
+        }
+      }
+
+      // 8. Product Rendering Logic (Updated to use INR symbol and check stock)
+      function renderProducts(products) {
+        productList.innerHTML = ""; // Clear existing products
+
+        if (products.length === 0) {
+          noResults.style.display = "block";
+          return;
+        }
+        noResults.style.display = "none";
+
+        products.forEach((product) => {
+          const item = document.createElement("div");
+          item.className = "product-item";
+
+          // Determine if product is out of stock
+          const isOutOfStock = product.stock <= 0;
+          const buttonText = isOutOfStock
+            ? `<i class="fas fa-ban"></i> Out of Stock`
+            : `<i class="fas fa-cart-plus"></i> Add to Cart`;
+          const buttonClass = isOutOfStock
+            ? "add-to-cart out-of-stock"
+            : "add-to-cart";
+
+          item.innerHTML = `
+                  <div class="product-item-image">
+                      <img 
+                          src="${product.imageUrl}" 
+                          alt="${product.name}" 
+                          onerror="this.onerror=null; this.src='images/placeholder.jpg'"
+                      >
+                  </div>
+                  <div class="product-info">
+                      <h3>${product.name}</h3>
+                      <p><strong>Category:</strong> ${product.category}</p>
+                      <span class="product-price">
+                          ₹${product.price.toFixed(2)}${product.unit} </span>
+                      <span class="product-farmer">
+                          <i class="fas fa-tractor"></i> ${product.farmer}
+                      </span>
+                      <p style="font-size: 0.8em; color: ${
+                        isOutOfStock ? "#f44336" : "#a0a0a0"
+                      }; font-weight: ${
+            isOutOfStock ? "bold" : "normal"
+          }; margin-top: 10px;">
+                        Stock: ${product.stock} ${
+            product.stock === 0 ? "units" : "units available"
+          }
+                      </p>
+                  </div>
+                  <button class="${buttonClass}" ${
+            isOutOfStock ? "disabled" : `onclick="addToCart(${product.id})"`
+          }>
+                      ${buttonText}
+                  </button>
+              `;
+          productList.appendChild(item);
+        });
+        // Add a style for out-of-stock button dynamically or in CSS
+        if (!document.getElementById("outOfStockStyle")) {
+          const style = document.createElement("style");
+          style.id = "outOfStockStyle";
+          style.textContent = `
+            .out-of-stock {
+              background-color: #e0e0e0 !important;
+              color: #757575 !important;
+              cursor: not-allowed !important;
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+
+      // 9. Filtering and Sorting Logic (Main function)
+      function filterProducts() {
+        let filtered = [...MOCK_PRODUCTS]; // Start with a fresh copy
+
+        const categoryVal = categoryFilter.value.toLowerCase();
+        const farmerVal = farmerSearch.value.toLowerCase().trim();
+        const sortOrder = priceSort.value;
+
+        // Filter by Category
+        if (categoryVal) {
+          filtered = filtered.filter(
+            (p) => p.category.toLowerCase() === categoryVal
+          );
+        }
+
+        // Filter by Farmer Search
+        if (farmerVal) {
+          filtered = filtered.filter((p) =>
+            p.farmer.toLowerCase().includes(farmerVal)
+          );
+        }
+
+        // Sort by Price
+        if (sortOrder !== "none") {
+          filtered.sort((a, b) => {
+            if (sortOrder === "asc") {
+              return a.price - b.price;
+            } else {
+              return b.price - a.price;
+            }
+          });
+        }
+
+        renderProducts(filtered);
+      }
+
+      // 10. Populate Filters and Initial Cart/Load
+      function initializeCart() {
+        // Load cart from localStorage
+        const storedCart = localStorage.getItem("customerCart");
+        if (storedCart) {
+          try {
+            cart = JSON.parse(storedCart);
+          } catch (e) {
+            console.error("Error parsing cart data from localStorage", e);
+            cart = [];
+          }
+        }
+        updateCartCountDisplay();
+      }
+
+      function setupFiltersAndLoad() {
+        // Get unique categories from mock data
+        const categories = [
+          ...new Set(MOCK_PRODUCTS.map((p) => p.category)),
+        ].sort();
+
+        categories.forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          categoryFilter.appendChild(option);
+        });
+
+        // Initial rendering of all products
+        filterProducts(); // Use filterProducts to handle initial display and sorting
+      }
+
+      // 11. Initialize on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        updateNavForRole(); // Set up login/logout persistence
+        initializeCart(); // Load cart data and update the badge
+        setupFiltersAndLoad(); // Set up filters and render products
+      });
+    </script>
+  </body>
+</html>
