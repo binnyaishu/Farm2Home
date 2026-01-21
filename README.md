@@ -12,6 +12,6 @@ Farm2Home is an online platform that connects farmers directly with consumers, e
 
 🎯 Use Case:
 Farm2Home is useful for:
-Consumers looking for fresh and organic produce
-Farmers wanting to sell directly to customers
-Supporting local agriculture and sustainable farming
+Consumers looking for fresh and organic produce. 
+Farmers wanting to sell directly to customers. 
+Supporting local agriculture and sustainable farming.
